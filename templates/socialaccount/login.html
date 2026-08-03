@@ -1,0 +1,132 @@
+{% extends '__base.html' %}
+{% load socialaccount %}
+
+{% block title %}Login com {{ provider.name }}{% endblock title %}
+
+{% block navbar %}
+{% endblock navbar %}
+
+{% block main_content %}
+<section class="hero is-fullheight" style="background: linear-gradient(135deg, #04AABB 0%, #3C89E5 100%);">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop">
+          
+          <div class="has-text-centered mb-5">
+            <span class="icon is-large has-text-white">
+              {% if provider.id == "google" %}
+                <i class="fab fa-google fa-3x"></i>
+              {% elif provider.id == "facebook" %}
+                <i class="fab fa-facebook fa-3x"></i>
+              {% else %}
+                <i class="fas fa-sign-in-alt fa-3x"></i>
+              {% endif %}
+            </span>
+            <h1 class="title is-3 has-text-white mt-3">Entrar via {{ provider.name }}</h1>
+            <p class="has-text-white-ter">Você está prestes a fazer login usando uma conta de terceiros</p>
+          </div>
+
+          <div class="box" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+            
+            {% if messages %}
+              {% for message in messages %}
+                <div class="notification is-{{ message.tags }} is-light">
+                  <button class="delete"></button>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            <div class="content has-text-centered mb-4">
+              <div class="notification is-info is-light">
+                <span class="icon">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+                <span>Ao continuar, você será redirecionado para {{ provider.name }}</span>
+              </div>
+            </div>
+
+            <form method="post">
+              {% csrf_token %}
+              
+              <div class="field">
+                <div class="control">
+                  <button type="submit" class="button is-fullwidth is-medium" 
+                    style="{% if provider.id == 'google' %}background-color: #4285F4;{% elif provider.id == 'facebook' %}background-color: #1877F2;{% elif provider.id == 'github' %}background-color: #333;{% else %}background-color: #04AABB;{% endif %} color: white; border: none; font-weight: 500;">
+                    <span class="icon">
+                      {% if provider.id == "google" %}
+                        <i class="fab fa-google"></i>
+                      {% elif provider.id == "facebook" %}
+                        <i class="fab fa-facebook-f"></i>
+                      {% elif provider.id == "github" %}
+                        <i class="fab fa-github"></i>
+                      {% else %}
+                        <i class="fas fa-sign-in-alt"></i>
+                      {% endif %}
+                    </span>
+                    <span>Continuar com {{ provider.name }}</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <hr>
+
+            <div class="has-text-centered">
+              <a href="{% url 'account_login' %}">
+                <span class="icon">
+                  <i class="fas fa-arrow-left"></i>
+                </span>
+                <span>Voltar para login</span>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+      const $notification = $delete.parentNode;
+      $delete.addEventListener('click', () => {
+        $notification.parentNode.removeChild($notification);
+      });
+    });
+  });
+</script>
+
+<style>
+  .box {
+    animation: fadeInUp 0.5s ease;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  button[type="submit"]:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .hero-body {
+      padding: 1.5rem;
+    }
+  }
+</style>
+{% endblock main_content %}

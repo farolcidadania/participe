@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+:root {
+    --bulma-card-background-color: #da0000;
+    --primary-color: #3C89E5;
+    --secondary-color: #EC3D6E;
+    --tertiary-color: #04AABB;
+    --quaternary-color: #F7B538;
+    --quinary-color: #FFFFFF;
+}
+
+* {
+    font-family: 'Oswald', sans-serif;
+}
+
+
+.alert-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    width: auto;
+    max-width: 300px;
+}
+
+.bg-brand-primary {
+    background-color: var(--primary-color);
+}
+
+/* Custom Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Enhanced Shadow */
+.shadow-3xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}

@@ -1,0 +1,157 @@
+{% extends '__base.html' %}
+{% load socialaccount %}
+
+{% block title %}Completar Cadastro{% endblock title %}
+
+{% block navbar %}
+{% endblock navbar %}
+
+{% block main_content %}
+<section class="hero is-fullheight" style="background: linear-gradient(135deg, #04AABB 0%, #3C89E5 100%);">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop">
+          
+          <div class="has-text-centered mb-5">
+            <span class="icon is-large has-text-white">
+              {% if account.provider == "google" %}
+                <i class="fab fa-google fa-3x"></i>
+              {% elif account.provider == "facebook" %}
+                <i class="fab fa-facebook fa-3x"></i>
+              {% elif account.provider == "github" %}
+                <i class="fab fa-github fa-3x"></i>
+              {% else %}
+                <i class="fas fa-user-plus fa-3x"></i>
+              {% endif %}
+            </span>
+            <h1 class="title is-3 has-text-white mt-3">Cadastrar-se</h1>
+            <p class="has-text-white-ter">Você está prestes a usar sua conta {{ account.provider|title }} para fazer login em example.com</p>
+          </div>
+
+          <div class="box" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+            
+            {% if messages %}
+              {% for message in messages %}
+                <div class="notification is-{{ message.tags }} is-light">
+                  <button class="delete"></button>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            <div class="content has-text-centered mb-4">
+              <div class="notification is-info is-light">
+                <span class="icon">
+                  <i class="fas fa-info-circle"></i>
+                </span>
+                <span>Como passo final, por favor, complete o formulário a seguir</span>
+              </div>
+            </div>
+
+            <form method="post">
+              {% csrf_token %}
+              
+              <div class="field">
+                <label class="label">Email</label>
+                <div class="control has-icons-left">
+                  <input class="input is-medium" type="email" name="email" value="{{ form.email.value|default:'' }}" readonly>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </div>
+                {% if form.email.errors %}
+                  {% for error in form.email.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+
+              {% if form.username %}
+              <div class="field">
+                <label class="label">Nome de usuário</label>
+                <div class="control has-icons-left">
+                  <input class="input is-medium" type="text" name="username" value="{{ form.username.value|default:'' }}" placeholder="Digite seu nome de usuário">
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                  </span>
+                </div>
+                {% if form.username.errors %}
+                  {% for error in form.username.errors %}
+                    <p class="help is-danger">{{ error }}</p>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              {% endif %}
+
+              <div class="field">
+                <div class="control">
+                  <button type="submit" class="button is-fullwidth is-medium" style="background-color: #04AABB; color: white; border: none; font-weight: 500;">
+                    <span class="icon">
+                      <i class="fas fa-check"></i>
+                    </span>
+                    <span>Cadastrar-se</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <hr>
+
+            <div class="has-text-centered">
+              <a href="{% url 'account_login' %}">
+                <span class="icon">
+                  <i class="fas fa-arrow-left"></i>
+                </span>
+                <span>Voltar para login</span>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+      const $notification = $delete.parentNode;
+      $delete.addEventListener('click', () => {
+        $notification.parentNode.removeChild($notification);
+      });
+    });
+  });
+</script>
+
+<style>
+  .box {
+    animation: fadeInUp 0.5s ease;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  button[type="submit"]:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .hero-body {
+      padding: 1.5rem;
+    }
+  }
+</style>
+{% endblock main_content %}

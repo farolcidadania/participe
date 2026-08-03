@@ -1,0 +1,204 @@
+{% extends '__base.html' %}
+{% load static %}
+
+{% block title %}Meu Perfil{% endblock %}
+
+{% block main_content %}
+<section class="section farol-profile-section">
+  <div class="container">
+
+    {# ── Header card ── #}
+    <div class="farol-profile-header card mb-5">
+      <div class="card-content">
+        <div class="farol-profile-hero">
+
+          {# Avatar #}
+          <div class="farol-avatar-wrap">
+            {% if perfil.get_avatar_url %}
+              <img class="farol-avatar" src="{{ perfil.get_avatar_url }}" alt="Avatar de {{ user.get_full_name|default:user.username }}">
+            {% else %}
+              <div class="farol-avatar farol-avatar--placeholder">
+                <i class="fas fa-user-circle"></i>
+              </div>
+            {% endif %}
+          </div>
+
+          {# Info #}
+          <div class="farol-profile-info">
+            <h1 class="farol-profile-name">
+              {{ user.get_full_name|default:user.username }}
+            </h1>
+
+            {# primary email + badge #}
+            {% with primary=email_addresses|first %}
+            {% if primary %}
+              <p class="farol-profile-email">
+                <span class="icon-text">
+                  <span class="icon has-text-info"><i class="fas fa-envelope"></i></span>
+                  <span>{{ primary.email }}</span>
+                </span>
+              </p>
+            {% endif %}
+            {% endwith %}
+
+            <p class="farol-profile-since">
+              <span class="icon-text has-text-grey">
+                <span class="icon"><i class="fas fa-calendar-alt"></i></span>
+                <span>Desde {{ user.date_joined|date:"F Y" }}</span>
+              </span>
+            </p>
+          </div>
+
+          {# Settings button #}
+          <div class="farol-profile-actions">
+            <a href="{% url 'social:account_settings' %}" class="button is-warning">
+              <i class="fas fa-pen"></i>
+            </a>
+          </div>
+
+        </div>
+
+        {% if perfil.bio %}
+        <div class="farol-profile-bio mt-4">
+          <div class="header">
+            <h1>Biografia</h1>
+          </div>
+          <p class="has-text-grey-dark">{{ perfil.bio }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ══ Profile section ══ */
+.farol-profile-section {
+  min-height: calc(100vh - 52px);
+  background: #f4f6fb;
+}
+
+/* ── Header card ── */
+.farol-profile-header {
+  border-radius: 1rem;
+  border: none;
+  box-shadow: 0 4px 24px rgba(32,60,100,.08);
+}
+
+.farol-profile-hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Avatar ── */
+.farol-avatar-wrap {
+  flex-shrink: 0;
+}
+
+.farol-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #d0e2f7;
+  box-shadow: 0 2px 12px rgba(32,60,100,.15);
+}
+
+.farol-avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8f0fe;
+  color: #3273dc;
+  font-size: 3.5rem;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 3px solid #d0e2f7;
+}
+
+/* ── Profile info ── */
+.farol-profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.farol-profile-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a2a4a;
+  margin-bottom: .25rem;
+}
+
+.farol-profile-email {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .25rem;
+  font-size: .95rem;
+  margin-bottom: .35rem;
+}
+
+.farol-profile-since {
+  font-size: .85rem;
+}
+
+.farol-social-pills {
+  display: flex;
+  gap: .4rem;
+  flex-wrap: wrap;
+}
+
+/* ── Actions ── */
+.farol-profile-actions {
+  margin-left: auto;
+  align-self: flex-start;
+}
+
+/* ── Bio ── */
+.farol-profile-bio {
+  padding-top: .75rem;
+  border-top: 1px solid #eaf0f9;
+  font-size: .95rem;
+  line-height: 1.6;
+}
+
+/* ── Detail cards ── */
+.farol-detail-card {
+  border-radius: .75rem;
+  border: none;
+  box-shadow: 0 2px 14px rgba(32,60,100,.07);
+  height: 100%;
+}
+
+.farol-email-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: .5rem 0;
+  border-bottom: 1px solid #f0f3f8;
+}
+.farol-email-row:last-child { border-bottom: none; }
+.farol-email-addr { font-size: .92rem; font-weight: 500; }
+.farol-email-tags { display: flex; gap: .3rem; margin-top: .2rem; }
+
+.farol-social-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .5rem 0;
+  border-bottom: 1px solid #f0f3f8;
+}
+.farol-social-row:last-child { border-bottom: none; }
+.farol-social-provider { font-weight: 600; font-size: .92rem; }
+
+.farol-account-table td { padding: .45rem .25rem; font-size: .9rem; vertical-align: middle; }
+
+@media (max-width: 768px) {
+  .farol-profile-actions { width: 100%; margin-left: 0; }
+  .farol-profile-actions .button { width: 100%; }
+}
+</style>
+{% endblock %}

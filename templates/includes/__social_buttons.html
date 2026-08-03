@@ -1,0 +1,52 @@
+{% load socialaccount %}
+
+<div class="social-login-buttons">
+  {% get_providers as socialaccount_providers %}
+  
+  {% if socialaccount_providers %}
+    {% for provider in socialaccount_providers %}
+      {% if provider.id == "google" %}
+        <a href="{% provider_login_url provider.id %}" class="button is-fullwidth is-medium mb-3" style="background-color: #4285F4; color: white; border: none;">
+          <span class="icon">
+            <i class="fab fa-google"></i>
+          </span>
+          <span>Continuar com Google</span>
+        </a>
+      {% elif provider.id == "facebook" %}
+        <a href="{% provider_login_url provider.id %}" class="button is-fullwidth is-medium mb-3" style="background-color: #1877F2; color: white; border: none;">
+          <span class="icon">
+            <i class="fab fa-facebook-f"></i>
+          </span>
+          <span>Continuar com Facebook</span>
+        </a>
+      {% elif provider.id == "github" %}
+        <a href="{% provider_login_url provider.id %}" class="button is-fullwidth is-medium mb-3" style="background-color: #333; color: white; border: none;">
+          <span class="icon">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>Continuar com GitHub</span>
+        </a>
+      {% else %}
+        <a href="{% provider_login_url provider.id %}" class="button is-fullwidth is-medium mb-3 is-link">
+          <span class="icon">
+            <i class="fas fa-sign-in-alt"></i>
+          </span>
+          <span>Continuar com {{ provider.name }}</span>
+        </a>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>
+
+<style>
+  .social-login-buttons .button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+  }
+  
+  .social-login-buttons .button {
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+</style>

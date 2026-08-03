@@ -1,0 +1,95 @@
+{# Modal de Termos e Condições - Componente Reutilizável #}
+<div id="modal-terms" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-file-contract"></i>
+          </span>
+          <span>Termos e Condições de Uso</span>
+        </span>
+      </p>
+      <button class="delete" aria-label="close" onclick="closeTermsModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="content">
+        <h4 class="title is-5">Farol da Cidadania</h4>
+        
+        <p>Ao criar uma conta no Farol da Cidadania, você concorda com os termos abaixo:</p>
+        
+        <h5 class="title is-6 mt-4">1. Cadastro</h5>
+        <p>Ao se registrar, você poderá comentar publicações, curtir conteúdos e interagir com a comunidade.</p>
+        <p>Você é responsável pelas informações fornecidas no cadastro e por manter seus dados atualizados.</p>
+        
+        <h5 class="title is-6 mt-4">2. Nome de usuário e privacidade</h5>
+        <p>Seu nome de usuário será público e poderá ser visualizado por outros visitantes do site.</p>
+        <p>Seu e-mail não será exibido publicamente, mas poderá ser utilizado para:</p>
+        <ul>
+          <li>Envio de notificações relacionadas à sua conta</li>
+          <li>Avisos sobre respostas, interações ou novidades do blog</li>
+        </ul>
+        <p>Não compartilhamos seu e-mail com terceiros sem seu consentimento.</p>
+        
+        <h5 class="title is-6 mt-4">3. Conduta do usuário</h5>
+        <p>Ao participar da comunidade, você se compromete a:</p>
+        <ul>
+          <li>Não publicar conteúdo ofensivo, discriminatório, ilegal ou abusivo</li>
+          <li>Respeitar outros usuários</li>
+          <li>Não utilizar o espaço para spam ou divulgação indevida</li>
+        </ul>
+        <p>Reservamo-nos o direito de remover conteúdos ou suspender contas que violem estas regras.</p>
+        
+        <h5 class="title is-6 mt-4">4. Conteúdo publicado</h5>
+        <p>Todo comentário ou interação é de responsabilidade do próprio usuário.</p>
+        <p>O Farol da Cidadania é um projeto voltado à informação e fortalecimento da comunidade, e busca manter um ambiente saudável e respeitoso.</p>
+        
+        <h5 class="title is-6 mt-4">5. Alterações nos termos</h5>
+        <p>Estes termos podem ser atualizados a qualquer momento. Ao continuar utilizando o site após alterações, você concorda com a versão mais recente.</p>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" onclick="closeTermsModal()">
+        <span class="icon">
+          <i class="fas fa-check"></i>
+        </span>
+        <span>Entendi</span>
+      </button>
+      <button class="button" onclick="closeTermsModal()">Fechar</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+  function openTermsModal() {
+    document.getElementById('modal-terms').classList.add('is-active');
+  }
+  
+  function closeTermsModal() {
+    document.getElementById('modal-terms').classList.remove('is-active');
+  }
+  
+  // Fechar modal ao clicar no fundo
+  document.addEventListener('DOMContentLoaded', () => {
+    const modalBg = document.querySelector('#modal-terms .modal-background');
+    if (modalBg) {
+      modalBg.addEventListener('click', closeTermsModal);
+    }
+  });
+</script>
+
+<style>
+  #modal-terms .modal-card-body {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  
+  #modal-terms .content h5 {
+    color: #3273dc;
+  }
+  
+  #modal-terms .modal-card {
+    max-width: 700px;
+  }
+</style>

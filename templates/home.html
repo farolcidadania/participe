@@ -1,0 +1,235 @@
+{% extends '__base.html' %}
+{% load socialaccount %}
+
+{% block title %}Home{% endblock title %} 
+
+{% block main_content %}
+<section class="section" style="background-color: #f5f5f5; min-height: 100vh;">
+  <div class="container">
+    <div class="columns is-variable is-8">
+      
+      <!-- Sidebar Esquerda - Desktop Only -->
+      <div class="column is-3 is-hidden-mobile is-hidden-tablet-only">
+        {% include 'includes/__sidebar.html' %}
+      </div>
+
+      <!-- Feed Principal -->
+      <div class="column is-12-mobile is-12-tablet-only is-6-desktop">
+        
+        <!-- Criar Post -->
+        {% if request.user.is_authenticated %}
+          {% include 'includes/__create_post.html' %}
+        {% else %}
+          <div class="notification mb-5">
+            <p class="has-text-centered">
+                {% get_providers as socialaccount_providers %}
+                
+                {% if socialaccount_providers %}
+                  {% for provider in socialaccount_providers %}
+                    {% if provider.id == "google" %}
+                        <a href="{% provider_login_url provider.id %}" class="button is-fullwidth is-medium is-rounded mb-3" style="background-color: #ffffff; color: #3c4043; border: 1px solid #dadce0; font-weight: 300; display: flex; align-items: center; justify-content: center; gap: 12px;">
+                          <span class="icon is-medium">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 48 48">
+                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                                <path fill="none" d="M0 0h48v48H0z"></path>
+                            </svg>
+                          </span>
+                          <span>Entrar com o Google</span>
+                        </a>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+            </p>
+          </div>
+        {% endif %}
+
+        <!-- Destaques -->
+        <div id="destaques" class="mb-5">
+          <h2 class="title is-5 mb-3">
+            <span class="icon-text">
+              <span class="icon has-text-warning">
+                <i class="fas fa-star"></i>
+              </span>
+              <span>Ultimas tramitações</span>
+            </span>
+          </h2>
+
+
+          {% for destaque in destaques %}
+            {% with trams=destaque.ultimas_tramitacoes %}
+            <div class="card destaque-card mb-4">
+              <header class="card-header">
+                <p class="card-header-title">
+                  <span class="icon has-text-primary mr-2">
+                    <i class="fas fa-gavel"></i>
+                  </span>
+                  {{ destaque }}
+                </p>
+                
+                <div class="autores-stack">
+                  {% for autor in destaque.autores.all %}
+                    {% if autor.vereador and autor.vereador.imagem %}
+                      <img
+                        class="autor-avatar"
+                        src="{{ autor.vereador.imagem }}"
+                        alt="{{ autor.vereador.nome }}"
+                        title="{{ autor.vereador.nome }}"
+                      />
+                    {% else %}
+                      <span class="autor-avatar autor-avatar--fallback" title="{{ autor.nome }}">
+                        {{ autor.nome|first|upper }}
+                      </span>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <span class="card-header-icon">
+                  {% if trams %}
+                  <span class="tag is-warning is-light" title="{{ trams.0.data|date:'d/m/Y H:i:s' }}">{{ trams.0.get_time_since }}</span>
+                  {% endif %}
+                </span>
+              </header>
+              <div class="card-content">
+                <!-- Tramitações: atual + anterior -->
+                {% if trams %}
+                <div class="tramitacao-flow">
+                  {% for tram in trams|slice:":2" %}
+                  <div class="is-flex" style="gap:.65rem;align-items:flex-start;">
+                    <div style="display:flex;flex-direction:column;align-items:center;">
+                      <div style="width:10px;height:10px;border-radius:50%;background:{% if forloop.first %}#3C89E5{% else %}#d0d9e8{% endif %};margin-top:.25rem;flex-shrink:0;"></div>
+                      {% if not forloop.last %}
+                      <div style="width:2px;flex:1;min-height:18px;background:#e9e9e9;margin-top:3px;"></div>
+                      {% endif %}
+                    </div>
+                    <div class="pb-2" style="flex:1;">
+                      <p class="is-size-7 has-text-weight-semibold {% if forloop.first %}has-text-dark{% else %}has-text-grey{% endif %}">{{ tram.situacao }}</p>
+                      {% if tram.orgao %}<p class="is-size-7 has-text-grey">{{ tram.orgao }}</p>{% endif %}
+                      <p class="is-size-7 has-text-grey-light">{{ tram.data|date:"d/m/Y H:i" }}</p>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+                {% endif %}
+              </div>
+              <footer class="card-footer">
+                <a href="{% url 'legis:detalhe' destaque.id %}" rel="noopener" class="card-footer-item has-text-primary has-text-weight-semibold">
+                  <i class="fas fa-eye mr-2"></i>
+                  ver mais 
+                </a>
+              </footer>
+            </div>
+            {% endwith %}
+          {% endfor %}
+        </div>
+        
+      </div>
+
+      <!-- Sidebar Direita - Desktop Only -->
+      <div class="column is-3 is-hidden-mobile is-hidden-tablet-only">
+
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              <span class="icon-text">
+                <span class="icon has-text-success">
+                  <i class="fas fa-link"></i>
+                </span>
+                <span style="user-select: none;">Links Úteis</span>
+              </span>
+            </p>
+          </header>
+          <div class="card-content">
+            <aside class="menu">
+              <ul class="menu-list">
+                <li><a href="https://www.faroldacidadania.com.br/institucional/sobre-o-farol" target="_blank"><span class="icon-text"><span class="icon"><i class="fas fa-info-circle"></i></span><span>Sobre</span></span></a></li>
+                <li><a href="{% url 'privacy_policy' %}"><span class="icon-text"><span class="icon"><i class="fas fa-shield-alt"></i></span><span>Privacidade</span></span></a></li>
+                <li><a href="{% url 'terms_of_service' %}"><span class="icon-text"><span class="icon"><i class="fas fa-file-contract"></i></span><span>Termos</span></span></a></li>
+              </ul>
+            </aside>
+          </div>
+          <footer class="card-footer">
+            <p class="card-footer-item has-text-grey is-size-7">
+              © 2026 Farol Cidadania
+            </p>
+          </footer>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Mobile Sidebar Toggle (opcional para futuro) -->
+<style>
+  /* Customização das cores do tema */
+  .is-primary {
+    background-color: #3C89E5 !important;
+    border-color: #3C89E5 !important;
+  }
+  
+  .has-text-primary {
+    color: #3C89E5 !important;
+  }
+  
+  .button.is-primary:hover {
+    background-color: #2e6fb8 !important;
+  }
+  
+  /* Melhorias de responsividade */
+  @media screen and (max-width: 768px) {
+    .section {
+      padding: 1rem 0.5rem;
+    }
+  }
+  
+  /* Smooth scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Avatar stack de autores */
+  .autores-stack {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0.6rem;
+  }
+
+  .autor-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,.18);
+    object-fit: cover;
+    margin-left: -10px;
+    transition: transform 0.18s ease, z-index 0s;
+    position: relative;
+    z-index: 1;
+    cursor: default;
+    background-color: #e8eef7;
+  }
+
+  .autores-stack .autor-avatar:first-child {
+    margin-left: 0;
+  }
+
+  .autor-avatar:hover {
+    transform: translateY(-5px) scale(1.08);
+    z-index: 10;
+  }
+
+  .autor-avatar--fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #3C89E5, #1a5bbf);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    user-select: none;
+  }
+</style>
+{% endblock main_content %}

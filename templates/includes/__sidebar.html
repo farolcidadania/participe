@@ -1,0 +1,72 @@
+{% load static %}
+
+<!-- Sidebar - Perfil do Usuário -->
+<div class="card">
+  <div class="card-content has-text-centered">
+    
+    <!-- Avatar do Usuário -->
+    <div class="mb-4">
+      {% if request.user.is_authenticated %}
+        {% with avatar_url=request.user.perfil.get_avatar_url %}
+        {% if avatar_url %}
+          <figure class="image is-128x128 is-inline-block">
+            <img class="is-rounded" src="{{ avatar_url }}" alt="Avatar de {{ request.user.username }}">
+          </figure>
+        {% else %}
+          <span class="icon is-large" style="font-size: 8rem; color: #3273dc;">
+            <i class="fa-solid fa-user-circle"></i>
+          </span>
+        {% endif %}
+        {% endwith %}
+      {% else %}
+        <!-- Ícone para visitantes não autenticados -->
+        <span class="icon is-large" style="font-size: 8rem; color: #b5b5b5;">
+          <i class="fa-solid fa-user-circle"></i>
+        </span>
+      {% endif %}
+    </div>
+
+    <!-- Nome do Usuário -->
+    <p class="title is-5 mb-2">
+      {% if request.user.is_authenticated %}
+        {{ request.user.username }}
+      {% else %}
+        Visitante
+      {% endif %}
+    </p>
+
+    <!-- Email ou Mensagem -->
+    <p class="subtitle is-6 has-text-grey mb-4">
+      {% if request.user.is_authenticated %}
+        {{ request.user.email }}
+      {% else %}
+        Faça login para interagir
+      {% endif %}
+    </p>
+
+    <!-- Estatísticas do Usuário (opcional - descomente para usar) -->
+    {% if request.user.is_authenticated %}
+    <!-- <div class="level is-mobile">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Posts</p>
+          <p class="title is-6">{{ user_stats.posts|default:"0" }}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Seguidores</p>
+          <p class="title is-6">{{ user_stats.followers|default:"0" }}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Seguindo</p>
+          <p class="title is-6">{{ user_stats.following|default:"0" }}</p>
+        </div>
+      </div>
+    </div> -->
+    {% endif %}
+
+  </div>
+</div>

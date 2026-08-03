@@ -1,0 +1,184 @@
+{% extends '__base.html' %}
+{% load socialaccount %}
+{% load static %}
+{% block title %}Criar Conta{% endblock title %}
+
+{% block navbar %}
+  {# Navbar simplificada #}
+{% endblock navbar %}
+
+{% block main_content %}
+<section class="hero is-fullheight is-info">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          
+          <div class="has-text-centered mb-5">
+            <img src="{% static 'images/logo-light.png' %}" alt="Logo" style="max-width: 150px;">
+          </div>
+
+          <div class="box" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+            
+            {% if messages %}
+              {% for message in messages %}
+                <div class="notification is-{{ message.tags }} is-light">
+                  <button class="delete"></button>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            <div class="mb-4">
+              <button type="button" class="button is-fullwidth is-light is-small" onclick="openTermsModal()">
+                <span class="icon">
+                  <i class="fas fa-file-contract"></i>
+                </span>
+                <span>Ler Termos e Condições</span>
+              </button>
+            </div>
+
+            {# Modal de Termos #}
+            {% include 'includes/__modal_terms.html' %}
+
+            <div class="mb-4">
+              {% include 'includes/__social_buttons.html' %}
+            </div>
+
+            <form method="post">
+              {% csrf_token %}
+              
+              <div class="field">
+                <label class="label">Email</label>
+                <div class="control has-icons-left">
+                  <input class="input is-medium" type="email" name="email" placeholder="seu@email.com" required>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Nome de usuário</label>
+                <div class="control has-icons-left">
+                  <input class="input is-medium" type="text" name="username" placeholder="seu_usuario" required>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Senha</label>
+                <div class="control has-icons-left">
+                  <input class="input is-medium" type="password" name="password1" placeholder="••••••••" required>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Confirmar Senha</label>
+                <div class="control has-icons-left">
+                  <input class="input is-medium" type="password" name="password2" placeholder="••••••••" required>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="control">
+                  <button type="submit" class="button is-fullwidth is-medium is-success">
+                    <span class="icon">
+                      <i class="fas fa-user-plus"></i>
+                    </span>
+                    <span>Criar Conta</span>
+                  </button>
+                </div>
+              </div>
+
+              {% if form.errors %}
+                <div class="notification is-danger is-light mt-3">
+                  {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                      <p>{{ error }}</p>
+                    {% endfor %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </form>
+
+          </div>
+
+          {# Link para login #}
+          <div class="has-text-centered mt-4">
+            <p class="has-text-white">
+              Já tem uma conta? 
+              <a href="{% url 'account_login' %}" class="has-text-white" style="text-decoration: underline; font-weight: bold;">
+                Fazer login
+              </a>
+            </p>
+          </div>
+
+          {# Voltar para home #}
+          <div class="has-text-centered mt-3">
+            <a href="{% url 'home' %}" class="has-text-white-ter">
+              <span class="icon">
+                <i class="fas fa-arrow-left"></i>
+              </span>
+              <span>Voltar para home</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+      const $notification = $delete.parentNode;
+      $delete.addEventListener('click', () => {
+        $notification.parentNode.removeChild($notification);
+      });
+    });
+  });
+</script>
+
+<style>
+  .box {
+    animation: fadeInUp 0.5s ease;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  button[type="submit"]:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+  }
+  
+  button[type="submit"] {
+    transition: all 0.2s ease;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .hero-body {
+      padding: 1.5rem;
+    }
+  }
+</style>
+{% endblock main_content %}

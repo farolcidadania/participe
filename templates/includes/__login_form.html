@@ -1,0 +1,51 @@
+<form method="post" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  
+  <div class="field">
+    <label class="label">Email</label>
+    <div class="control has-icons-left">
+      <input class="input is-medium" type="email" name="login" placeholder="seu@email.com" required>
+      <span class="icon is-small is-left">
+        <i class="fas fa-envelope"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Senha</label>
+    <div class="control has-icons-left">
+      <input class="input is-medium" type="password" name="password" placeholder="••••••••" required>
+      <span class="icon is-small is-left">
+        <i class="fas fa-lock"></i>
+      </span>
+    </div>
+  </div>
+  
+  <div class="field">
+    <div class="control">
+      <button type="submit" class="button is-primary is-fullwidth is-medium" style="background-color: #3C89E5; border-color: #3C89E5;">
+        <span class="icon">
+          <i class="fas fa-sign-in-alt"></i>
+        </span>
+        <span>Entrar</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="has-text-centered mt-3">
+    <a href="{% url 'account_reset_password' %}" class="has-text-grey">Esqueci minha senha</a>
+  </div>
+</form>
+
+<style>
+  .button.is-primary:hover {
+    background-color: #2e6fb8 !important;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+  }
+  
+  .button.is-primary {
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+</style>

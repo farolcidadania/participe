@@ -1,0 +1,108 @@
+{% extends '__base.html' %}
+
+{% block title %}{{ materia.get_tipo_display }} {{ materia.numero }}/{{ materia.ano }}{% endblock %}
+
+{% block main_content %}
+<section class="section pt-5 pb-6">
+  <div class="container" style="max-width:680px;">
+
+    <!-- Voltar -->
+    <a onclick="history.back()" class="is-flex is-align-items-center is-size-7 has-text-grey mb-4" style="gap:.4rem;">
+      <span class="icon is-small"><i class="fa-solid fa-arrow-left"></i></span>
+      <span>Voltar à lista</span>
+    </a>
+
+    <!-- Cabeçalho -->
+    <div class="box p-5 mb-4">
+      <p class="is-size-7 has-text-grey has-text-weight-semibold mb-1" style="text-transform:uppercase;letter-spacing:.05em;">
+        {{ materia.get_tipo_display }}
+      </p>
+      <h1 class="title is-5 mb-2" style="color: var(--primary-color);">
+        N.º {{ materia.numero }}/{{ materia.ano }}
+      </h1>
+
+      <div class="mb-4">
+        <a href="javascript:void(0);"
+           onclick="popup_pasta_digital('proposicao', {{ materia.get_internal_id }})"
+           class="button is-outlined is-primary is-fullwidth is-size-7" style="gap:.375rem;">
+          <span class="icon is-small"><i class="fa-solid fa-file-lines"></i></span>
+          <span>Visualizar documento</span>
+        </a>
+      </div>
+
+
+      {% if materia.ementa %}
+      <p class="is-size-6 has-text-grey-dark mb-3" style="line-height:1.7;">{{ materia.ementa }}</p>
+      {% endif %}
+
+      <div class="is-flex is-flex-wrap-wrap" style="gap:.4rem;">
+        {% if materia.data_apresentacao %}
+        <span class="tag is-light is-size-7">
+          <span class="icon is-small mr-1"><i class="fa-regular fa-calendar"></i></span>
+          {{ materia.data_apresentacao|date:"d/m/Y" }}
+        </span>
+        {% endif %}
+        {% if materia.camara_update %}
+        <span class="tag is-light is-size-7">
+          Atualizado há {{ materia.get_time_since_edited }}
+        </span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Autores -->
+    {% if materia.autores.all %}
+    <div class="box p-4 mb-4">
+      <p class="is-size-7 has-text-grey has-text-weight-bold mb-3" style="text-transform:uppercase;letter-spacing:.05em;">Autoria</p>
+      {% for autor in materia.autores.all %}
+      <div class="is-flex is-align-items-center mb-2" style="gap:.625rem;">
+        {% if autor.vereador and autor.vereador.imagem %}
+        <img src="{{ autor.vereador.imagem }}" alt="{{ autor.nome }}"
+             style="width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+        {% else %}
+        <span class="icon has-text-grey-light" style="width:32px;height:32px;border:1px solid #ddd;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+          <i class="fa-solid fa-user is-size-7"></i>
+        </span>
+        {% endif %}
+        <span class="is-size-7">{{ autor.nome }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Tramitações -->
+    {% if materia.tramitacoes.all %}
+    <div class="box p-4 mb-4">
+      <p class="is-size-7 has-text-grey has-text-weight-bold mb-3" style="text-transform:uppercase;letter-spacing:.05em;">Tramitações</p>
+      {% for tram in materia.tramitacoes.all %}
+      <div class="is-flex mb-4" style="gap:.75rem;">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="width:10px;height:10px;border-radius:50%;background:var(--secondary-color, #3273dc);margin-top:.3rem;flex-shrink:0;"></div>
+          {% if not forloop.last %}
+          <div style="width:2px;flex:1;background:#e9e9e9;margin-top:4px;"></div>
+          {% endif %}
+        </div>
+        <div class="pb-3" style="flex:1;">
+          <p class="is-size-7 has-text-weight-semibold">{{ tram.situacao }}</p>
+          {% if tram.orgao %}<p class="is-size-7 has-text-grey">{{ tram.orgao }}</p>{% endif %}
+          {% if tram.descricao %}<p class="is-size-7 has-text-grey-dark mt-1">{{ tram.descricao }}</p>{% endif %}
+          <p class="is-size-7 has-text-grey mt-1">{{ tram.data|date:"d/m/Y" }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Link externo -->
+    {% if materia.link_externo %}
+    <a href="{{ materia.link_externo }}" target="_blank" rel="noopener"
+       class="button is-fullwidth is-outlined is-size-7">
+      <span class="icon is-small"><i class="fa-solid fa-up-right-from-square"></i></span>
+      <span>Ver na Câmara</span>
+    </a>
+    {% endif %}
+
+  </div>
+</section>
+
+{% endblock %}

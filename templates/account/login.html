@@ -1,0 +1,109 @@
+{% extends '__base.html' %}
+{% load socialaccount %}
+{% load static %}
+{% block title %}Login{% endblock title %}
+
+{% block navbar %}
+  {# Navbar simplificada ou oculta para página de login #}
+{% endblock navbar %}
+
+{% block main_content %}
+<section class="hero is-fullheight is-info">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          
+          <div class="has-text-centered mb-5">
+            <img src="{% static 'images/logo-light.png' %}" alt="Logo" style="max-width: 150px;">
+            <h2 class="subtitle is-4 has-text-white">Farol Cidadania</h2>
+          </div>
+
+          <div class="box" style="border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+            
+            {% if messages %}
+              {% for message in messages %}
+                <div class="notification is-{{ message.tags }} is-light">
+                  <button class="delete"></button>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            {% if form.errors %}
+              <div class="notification is-danger is-light">
+                <button class="delete"></button>
+                <strong>Erro ao fazer login.</strong> Verifique suas credenciais.
+              </div>
+            {% endif %}
+
+            <div class="mb-4">
+              {% include 'includes/__social_buttons.html' %}
+            </div>
+            <div>
+              {% include 'includes/__login_form.html' %}
+            </div>
+
+          </div>
+          
+          <div class="has-text-centered mt-4">
+            <p class="has-text-white">
+              Não tem uma conta? 
+              <a href="{% url 'account_signup' %}" class="has-text-white" style="text-decoration: underline; font-weight: bold;">
+                Criar conta
+              </a>
+            </p>
+          </div>
+
+          <div class="has-text-centered mt-3">
+            <a href="{% url 'home' %}" class="has-text-white-ter">
+              <span class="icon">
+                <i class="fas fa-arrow-left"></i>
+              </span>
+              <span>Voltar para home</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Auto-hide notifications
+  document.addEventListener('DOMContentLoaded', () => {
+    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+      const $notification = $delete.parentNode;
+      $delete.addEventListener('click', () => {
+        $notification.parentNode.removeChild($notification);
+      });
+    });
+  });
+</script>
+
+<style>
+  /* Animações suaves */
+  .box {
+    animation: fadeInUp 0.5s ease;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsividade */
+  @media screen and (max-width: 768px) {
+    .hero-body {
+      padding: 1.5rem;
+    }
+  }
+</style>
+{% endblock main_content %}

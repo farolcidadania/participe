@@ -1,0 +1,30 @@
+<!-- Atividades Recentes -->
+<div class="card mb-4">
+    <header class="card-header">
+    <p class="card-header-title">
+        <span class="icon-text">
+        <span class="icon has-text-warning">
+            <i class="fas fa-bell"></i>
+        </span>
+        <span>Notificações</span>
+        </span>
+    </p>
+    </header>
+    <div class="card-content">
+    {% for i in "123" %}
+    <div class="media mb-3">
+        <div class="media-left">
+        <span class="icon has-text-info">
+            <i class="fas fa-user-plus"></i>
+        </span>
+        </div>
+        <div class="media-content">
+        <p class="is-size-7">
+            <strong>Usuário {{ forloop.counter }}</strong> começou a seguir você
+        </p>
+        <p class="is-size-7 has-text-grey">{{ forloop.counter }}h atrás</p>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>

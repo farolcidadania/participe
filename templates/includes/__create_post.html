@@ -1,0 +1,61 @@
+{% load static %}
+
+<div class="card mb-5">
+  <!-- <div class="card-content">
+    <div class="media">
+      <div class="media-left">
+        <figure class="image is-48x48">
+          {% if request.user.is_authenticated %}
+            {% if request.user.perfil.get_avatar_url %}
+            <img class="is-rounded" src="{{ request.user.perfil.get_avatar_url }}" alt="Avatar">
+            {% else %}
+            <i class="fa-solid fa-user"></i>
+            {% endif %}
+          {% else %}
+          <i class="fa-solid fa-user"></i>
+          {% endif %}
+        </figure>
+      </div>
+      <div class="media-content">
+        <div class="field">
+          <div class="control">
+            <textarea class="textarea" placeholder="No que você está pensando, {% if request.user.is_authenticated %}{{ request.user.username }}{% else %}visitante{% endif %}?" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- <nav class="level is-mobile">
+      <div class="level-left">
+        <a class="level-item has-text-info" title="Adicionar foto">
+          <span class="icon is-small">
+            <i class="fas fa-image"></i>
+          </span>
+          <span class="is-hidden-mobile ml-1">Foto</span>
+        </a>
+        <a class="level-item has-text-success" title="Adicionar vídeo">
+          <span class="icon is-small">
+            <i class="fas fa-video"></i>
+          </span>
+          <span class="is-hidden-mobile ml-1">Vídeo</span>
+        </a>
+        <a class="level-item has-text-warning" title="Adicionar emoji">
+          <span class="icon is-small">
+            <i class="fas fa-smile"></i>
+          </span>
+          <span class="is-hidden-mobile ml-1">Emoji</span>
+        </a>
+      </div> -->
+      <!-- <div class="level-right">
+        <div class="level-item">
+          <button class="button is-primary">
+            <span class="icon">
+              <i class="fas fa-paper-plane"></i>
+            </span>
+            <span>Publicar</span>
+          </button>
+        </div>
+      </div> -->
+    <!-- </nav> -->
+  <!-- </div> -->
+</div>

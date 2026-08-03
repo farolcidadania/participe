@@ -1,0 +1,65 @@
+{% if page_obj.has_other_pages %}
+<nav class="pagination is-centered is-rounded is-small mt-5 mb-5" role="navigation" aria-label="paginação">
+    {% if page_obj.has_previous %}
+        <a class="pagination-previous" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">
+            <span class="icon"><i class="fa-solid fa-chevron-left"></i></span>
+            <span class="is-hidden-mobile">Anterior</span>
+        </a>
+    {% else %}
+        <span class="pagination-previous" disabled>
+            <span class="icon"><i class="fa-solid fa-chevron-left"></i></span>
+            <span class="is-hidden-mobile">Anterior</span>
+        </span>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+        <a class="pagination-next" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">
+            <span class="is-hidden-mobile">Próxima</span>
+            <span class="icon"><i class="fa-solid fa-chevron-right"></i></span>
+        </a>
+    {% else %}
+        <span class="pagination-next" disabled>
+            <span class="is-hidden-mobile">Próxima</span>
+            <span class="icon"><i class="fa-solid fa-chevron-right"></i></span>
+        </span>
+    {% endif %}
+
+    <ul class="pagination-list">
+        {% if page_obj.number > 2 %}
+        <li>
+            <a class="pagination-link" aria-label="Ir para página 1" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page=1">1</a>
+        </li>
+        {% endif %}
+
+        {% if page_obj.number > 3 %}
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        {% endif %}
+
+        {% if page_obj.has_previous %}
+        <li>
+            <a class="pagination-link" aria-label="Ir para página {{ page_obj.previous_page_number }}" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+        </li>
+        {% endif %}
+
+        <li>
+            <a class="pagination-link is-current" aria-label="Página {{ page_obj.number }}" aria-current="page">{{ page_obj.number }}</a>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li>
+            <a class="pagination-link" aria-label="Ir para página {{ page_obj.next_page_number }}" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        </li>
+        {% endif %}
+
+        {% if page_obj.number < page_obj.paginator.num_pages|add:"-2" %}
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        {% endif %}
+
+        {% if page_obj.number < page_obj.paginator.num_pages|add:"-1" %}
+        <li>
+            <a class="pagination-link" aria-label="Ir para página {{ page_obj.paginator.num_pages }}" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}

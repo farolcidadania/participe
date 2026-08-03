@@ -1,0 +1,19 @@
+# 🤖 Olá, Bot (e humano curioso)!
+# 
+# Bem-vindo ao Farol da Cidadania.
+# Este é um portal open-source que coleta, organiza e traduz
+# (usando IA) os dados da Câmara Municipal para a população.
+#
+# Nós acreditamos que dados abertos fortalecem a democracia!
+# Sinta-se livre para indexar nossas páginas públicas para que 
+# mais cidadãos possam acompanhar os projetos de lei.
+#
+# Aos desenvolvedores que leem robots.txt:
+# "A transparência é a luz que afasta a corrupção." 🏛️💡
+# 
+# Saiba mais no nosso repositório.
+
+User-agent: *
+Disallow: /admin/
+Disallow: /accounts/
+Allow: /

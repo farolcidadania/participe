@@ -1,0 +1,13 @@
+{% extends '__base.html' %}
+
+{% block title %}teste{% endblock %}
+
+{% block main_content %}
+<div class="container">
+    <h1>List Integrations</h1>
+    <form action="{% url 'list_integrations' %}" method="post">
+        {% csrf_token %}
+        <button class="button is-dark" type="submit">start</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% load static %}
+{% load current_version %}
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock title %} - Farol</title>
+
+  
+
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
+
+  <link rel="icon" type="image/png" sizes="192x192" href="{% static 'images/favicon.png'%}">
+  <link rel="icon" type="image/png" sizes="512x512" href="{% static 'images/favicon.png'%}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon.png' %}">
+
+  <script src="{% static 'js/main.js' %}"></script>
+  
+  <!-- clarity -->
+  <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "wbo9ny7fip");
+  </script>
+
+</head>
+
+
+
+<body>
+  {% if messages %}
+  <div class="alert-container">
+    {% for message in messages %}
+    <div class="notification is-{{ message.tags }} is-light farol-message" role="alert">
+      <button class="delete" onclick="this.parentElement.remove()" aria-label="Fechar"></button>
+      <span class="mr-4">{{ message }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% block content %}
+
+  {% block navbar %}
+  {% include 'includes/__navbar.html' %}
+  {% endblock navbar %}
+  {% block main_content %} {% endblock main_content %}
+
+  {% endblock content %}
+
+  {% block scripts %}
+
+  <div style="z-index: 999; position: fixed; bottom: 64px; left: 50%; transform: translateX(-50%); font-size: .65rem; opacity: .45; pointer-events: none; white-space: nowrap;">
+    Versão {% current_version %}
+  </div>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- jQuery Mask Plugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+  <script src="{% static 'js/utils.js' %}"></script>
+
+  {% if not request.user.is_authenticated %}
+    <!-- <script src="//accounts.google.com/gsi/client" async></script>
+    <div id="g_id_onload"
+    data-client_id="#TODO FEATURE ADD CLIENTID"
+    data-login_uri="{% url 'google_login_by_token' %}">
+    </div> -->
+  {% endif %}
+{% endblock scripts %}
+
+</body>
+
+</html>

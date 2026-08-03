@@ -1,0 +1,274 @@
+{% extends '__base.html' %}
+
+{% block title %}Matérias Legislativas{% endblock %}
+
+{% block main_content %}
+<section class="section pt-5 pb-6">
+  <div class="container">
+
+    <!-- Cabeçalho -->
+    <div class="mb-4">
+      <h1 class="title is-5 mb-0" style="color: var(--primary-color);">Matérias Legislativas</h1>
+      <p class="is-size-7 has-text-grey">{{ page_obj.paginator.count }} matéria{{ page_obj.paginator.count|pluralize }} encontrada{{ page_obj.paginator.count|pluralize }}</p>
+    </div>
+
+    <!-- Filtros -->
+    <div class="box p-0 mb-4" id="filtro-panel">
+      <div class="is-flex is-justify-content-space-between is-align-items-center px-4 py-3"
+           id="filtro-header" onclick="toggleFiltros()" role="button" tabindex="0"
+           aria-expanded="false" aria-controls="filtro-content"
+           style="cursor:pointer;">
+        <span class="icon-text is-size-7 has-text-weight-semibold">
+          <span class="icon" style="color: var(--secondary-color);"><i class="fa-solid fa-sliders"></i></span>
+          <span>Filtros</span>
+          {% if request.GET.tipo or request.GET.ano or request.GET.q %}
+          <span class="tag is-rounded ml-2" style="background: var(--quaternary-color); color:#333; font-size:.6rem;">Ativos</span>
+          {% endif %}
+        </span>
+        <span class="icon" id="filtro-chevron"><i class="fa-solid fa-chevron-down" style="transition: transform .3s;"></i></span>
+      </div>
+
+      <div id="filtro-content" style="display:none;" class="px-4 pb-4 pt-2 has-background-white-bis" style="border-top:1px solid #eee;">
+        <form method="GET" action="">
+          <div class="columns is-multiline is-mobile is-gapless" style="gap:.5rem 0;">
+            <div class="column is-12-mobile is-4-tablet">
+              <div class="field mb-3 pr-2-tablet">
+                <label class="label is-size-7">Tipo</label>
+                <div class="control">
+                  <div class="select is-fullwidth is-small">
+                    <select name="tipo" id="filtro-tipo">
+                      <option value="">Todos</option>
+                      {% for key, label in tipos %}
+                      <option value="{{ key }}" {% if request.GET.tipo == key %}selected{% endif %}>{{ label }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column is-6-mobile is-4-tablet">
+              <div class="field mb-3 pr-2-tablet">
+                <label class="label is-size-7">Ano</label>
+                <div class="control">
+                  <div class="select is-fullwidth is-small">
+                    <select name="ano" id="filtro-ano">
+                      <option value="">Todos</option>
+                      {% for a in anos %}
+                      <option value="{{ a }}" {% if request.GET.ano == a|stringformat:"d" %}selected{% endif %}>{{ a }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column is-6-mobile is-4-tablet">
+              <div class="field mb-3">
+                <label class="label is-size-7">Buscar</label>
+                <div class="control has-icons-left">
+                  <input class="input is-small" type="text" name="q" id="filtro-busca"
+                         placeholder="Ementa..." value="{{ request.GET.q|default:'' }}">
+                  <span class="icon is-small is-left"><i class="fa-solid fa-magnifying-glass"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="is-flex is-justify-content-flex-end" style="gap:.5rem;">
+            <a href="{% url 'legis:projetos' %}" class="button is-light is-small">Limpar</a>
+            <button class="button is-small btn-primary-brand" type="submit">Filtrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Lista de Matérias -->
+    {% for projeto in projetos %}
+    <div class="card mb-4" id="materia-{{ projeto.pk }}">
+
+      <!-- card-header -->
+      <header class="card-header"
+              onclick="toggleMateria(this)" role="button" tabindex="0"
+              aria-expanded="false" style="cursor:pointer;">
+        <p class="card-header-title">
+          <span class="icon mr-2" style="color: var(--primary-color);">
+            <i class="fa-solid fa-file-lines"></i>
+          </span>
+          {{ projeto.get_tipo_display }} N.º {{ projeto.numero }}/{{ projeto.ano }}
+        </p>
+        <button class="card-header-icon materia-chevron" aria-label="expandir">
+          <span class="icon">
+            <i class="fa-solid fa-chevron-down has-text-grey-light"></i>
+          </span>
+        </button>
+      </header>
+
+      <!-- card-content (oculto por padrão) -->
+      <div class="materia-body" style="display:none;">
+        <div class="card-content">
+          <div class="content">
+
+            {% if projeto.ementa %}
+            <p class="is-size-7 has-text-grey-dark" style="line-height:1.65;">{{ projeto.ementa }}</p>
+            {% endif %}
+
+            <!-- Metadados -->
+            <p class="is-size-7 has-text-grey">
+              <span class="icon-text">
+                <span class="icon is-small"><i class="fa-regular fa-clock"></i></span>
+                <span>{{ projeto.get_time_since_edited }}</span>
+              </span>
+              {% with tram=projeto.tramitacoes.all|first %}
+              {% if tram %}
+              <span class="ml-2">
+                <span class="tag is-info is-light is-small">{{ tram.situacao }}</span>
+              </span>
+              {% endif %}
+              {% endwith %}
+            </p>
+
+            <!-- Autores -->
+            {% if projeto.autores.all %}
+            <div class="is-flex is-align-items-center mt-3" style="gap:.5rem; flex-wrap:wrap;">
+              {% for autor in projeto.autores.all %}
+              {% if autor.vereador and autor.vereador.imagem %}
+              <figure class="image is-24x24" style="margin:0;">
+                <img class="is-rounded" src="{{ autor.vereador.imagem }}" alt="{{ autor.nome }}"
+                     title="{{ autor.nome }}" style="object-fit:cover; border:2px solid #fff;">
+              </figure>
+              {% endif %}
+              {% endfor %}
+              <span class="is-size-7 has-text-grey">
+                {% for autor in projeto.autores.all %}{{ autor.nome }}{% if not forloop.last %}, {% endif %}{% endfor %}
+              </span>
+            </div>
+            {% endif %}
+
+          </div>
+        </div>
+
+        <!-- card-footer -->
+        <footer class="card-footer">
+          <a href="{% url 'legis:detalhe' projeto.pk %}" class="card-footer-item has-text-weight-semibold" style="color: var(--primary-color);">
+            <span class="icon is-small mr-1"><i class="fa-solid fa-circle-info"></i></span>
+            Ver detalhes
+          </a>
+          <a href="#" class="card-footer-item has-text-weight-semibold" style="color: var(--secondary-color);"
+             onclick="event.preventDefault(); abrirModal({{ projeto.pk }}, '{{ projeto.get_tipo_display }} N.º {{ projeto.numero }}/{{ projeto.ano }}')">
+            <span class="icon is-small mr-1"><i class="fa-solid fa-bell"></i></span>
+            Acompanhar
+          </a>
+        </footer>
+      </div>
+
+    </div>
+    {% empty %}
+    <div class="notification is-warning is-light is-size-7">
+      <span class="icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+      Nenhuma matéria encontrada.
+      {% if request.GET.tipo or request.GET.ano or request.GET.q %}
+      <a href="{% url 'legis:projetos' %}" class="has-text-weight-bold ml-1">Limpar filtros</a>
+      {% endif %}
+    </div>
+    {% endfor %}
+
+    <!-- Paginação -->
+    {% include 'includes/__paginate.html' with page_obj=page_obj %}
+
+  </div>
+</section>
+
+<!-- ════════ Modal Acompanhar ════════ -->
+<div class="modal" id="modal-acompanhar">
+  <div class="modal-background" onclick="fecharModal()"></div>
+  <div class="modal-card" style="max-width:480px; margin: 0 1rem;">
+    <header class="modal-card-head px-5 py-4" style="border-bottom:1px solid #eee;">
+      <div>
+        <p class="modal-card-title is-size-6 mb-0" style="font-size:1rem !important;">Acompanhar Matéria</p>
+        <p class="is-size-7 has-text-grey mt-1" id="modal-materia-label"></p>
+      </div>
+      <button class="delete" aria-label="fechar" onclick="fecharModal()"></button>
+    </header>
+    <section class="modal-card-body px-5 py-4">
+      <p class="is-size-7 has-text-grey-dark mb-4" style="line-height:1.6;">
+        Informe seu e-mail para receber atualizações sobre esta matéria.
+        Você poderá cancelar a inscrição a qualquer momento.
+      </p>
+      <form id="form-acompanhar" method="POST" action="#">
+        {% csrf_token %}
+        <input type="hidden" name="materia_id" id="modal-materia-id">
+        <div class="field">
+          <label class="label is-size-7">E-mail</label>
+          <div class="control has-icons-left">
+            <input class="input is-small" type="email" name="email" id="modal-email"
+                   placeholder="seu@email.com.br" required>
+            <span class="icon is-small is-left"><i class="fa-regular fa-envelope"></i></span>
+          </div>
+        </div>
+        <!-- Termos -->
+        <label class="checkbox is-size-7 has-text-grey-dark" style="display:flex;align-items:flex-start;gap:.5rem;line-height:1.5;">
+          <input type="checkbox" name="aceite" id="modal-aceite" required style="margin-top:.2rem; flex-shrink:0;">
+          <span>
+            Concordo em receber notificações por e-mail sobre atualizações desta matéria.
+            Poderei cancelar a inscrição a qualquer momento.
+          </span>
+        </label>
+      </form>
+    </section>
+    <footer class="modal-card-foot px-5 py-3" style="border-top:1px solid #eee; justify-content:flex-end; gap:.5rem;">
+      <button class="button is-small is-light" onclick="fecharModal()">Cancelar</button>
+      <button class="button is-small btn-primary-brand" onclick="enviarAcompanhar()">
+        <span class="icon is-small"><i class="fa-solid fa-paper-plane"></i></span>
+        <span>Confirmar</span>
+      </button>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ── Filtros ── */
+function toggleFiltros() {
+  const c = document.getElementById('filtro-content');
+  const ic = document.querySelector('#filtro-chevron i');
+  const open = c.style.display === 'none';
+  c.style.display = open ? 'block' : 'none';
+  ic.style.transform = open ? 'rotate(180deg)' : '';
+  document.getElementById('filtro-header').setAttribute('aria-expanded', open);
+}
+
+/* ── Collapse das matérias ── */
+function toggleMateria(header) {
+  const body = header.nextElementSibling;
+  const ic = header.querySelector('.materia-chevron');
+  const open = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  ic.style.transform = open ? 'rotate(180deg)' : '';
+  header.setAttribute('aria-expanded', open);
+}
+
+/* ── Modal Acompanhar ── */
+function abrirModal(id, label) {
+  document.getElementById('modal-materia-id').value = id;
+  document.getElementById('modal-materia-label').textContent = label;
+  document.getElementById('modal-email').value = '';
+  document.getElementById('modal-aceite').checked = false;
+  document.getElementById('modal-acompanhar').classList.add('is-active');
+}
+
+function fecharModal() {
+  document.getElementById('modal-acompanhar').classList.remove('is-active');
+}
+
+function enviarAcompanhar() {
+  const form = document.getElementById('form-acompanhar');
+  if (!form.checkValidity()) { form.reportValidity(); return; }
+  // TODO: submeter via fetch para a URL de acompanhamento
+  alert('Inscrição realizada! Você receberá atualizações no e-mail informado.');
+  fecharModal();
+}
+
+/* Auto-abrir filtros se há filtros ativos */
+document.addEventListener('DOMContentLoaded', () => {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('tipo') || p.get('ano') || p.get('q')) toggleFiltros();
+});
+</script>
+{% endblock %}

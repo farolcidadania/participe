@@ -1,0 +1,37 @@
+
+
+<!-- Sugestões de Conexão -->
+<div class="card mb-4">
+  <header class="card-header">
+    <p class="card-header-title">
+      <span class="icon-text">
+        <span class="icon has-text-info">
+          <i class="fas fa-user-friends"></i>
+        </span>
+        <span>Sugestões para você</span>
+      </span>
+    </p>
+  </header>
+  <div class="card-content">
+    {% for i in "123" %}
+    <div class="media mb-3">
+      <div class="media-left">
+        <figure class="image is-48x48">
+          <img class="is-rounded" src="https://via.placeholder.com/48" alt="Usuário">
+        </figure>
+      </div>
+      <div class="media-content">
+        <p class="title is-6 mb-1">Usuário {{ forloop.counter }}</p>
+        <p class="subtitle is-7 has-text-grey">{{ forloop.counter }}0 amigos em comum</p>
+      </div>
+      <div class="media-right">
+        <button class="button is-small is-primary is-light">
+          <span class="icon is-small">
+            <i class="fas fa-user-plus"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
