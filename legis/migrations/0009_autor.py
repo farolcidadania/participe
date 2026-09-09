@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('camara', '0004_vereador_data_desativacao'),
+        ('camera', '0004_vereador_data_desativacao'),
         ('legis', '0008_alter_autoria_autor_delete_autor'),
     ]
 
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nome', models.CharField(max_length=255, unique=True)),
-                ('vereador', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='autores', to='camara.vereador')),
+                ('vereador', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='autores', to='camera.vereador')),
             ],
             options={
                 'verbose_name': 'Autor',

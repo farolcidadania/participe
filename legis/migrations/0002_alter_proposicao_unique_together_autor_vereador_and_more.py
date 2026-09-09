@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('camara', '0001_initial'),
+        ('camera', '0001_initial'),
         ('legis', '0001_initial'),
     ]
 
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='autor',
             name='vereador',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='camara.vereador'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='camera.vereador'),
         ),
         migrations.AlterField(
             model_name='proposicao',
@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('data_envio', models.DateField(blank=True, null=True)),
-                ('comissao', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='camara.comissao')),
+                ('comissao', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='camera.comissao')),
                 ('proposicao', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='legis.proposicao')),
             ],
         ),
@@ -95,7 +95,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('voto', models.CharField(choices=[('favoravel', 'Favorável'), ('contrario', 'Contrário'), ('abstencao', 'Abstenção'), ('ausente_nao_justificado', 'Ausente Não Justificado'), ('ausente_justificado', 'Ausente Justificado'), ('presente_nao_votou', 'Presente Não Votou')], max_length=30)),
-                ('vereador', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='camara.vereador')),
+                ('vereador', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='camera.vereador')),
                 ('votacao', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='legis.votacao')),
             ],
             options={

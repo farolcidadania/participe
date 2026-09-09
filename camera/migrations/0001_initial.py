@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
                 ('ativo', models.BooleanField(default=True)),
                 ('data_inicio', models.DateField(blank=True, null=True)),
                 ('data_fim', models.DateField(blank=True, null=True)),
-                ('partido', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='camara.partido')),
+                ('partido', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='camera.partido')),
             ],
         ),
     ]

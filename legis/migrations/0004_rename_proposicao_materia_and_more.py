@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('camara', '0004_vereador_data_desativacao'),
+        ('camera', '0004_vereador_data_desativacao'),
         ('legis', '0003_alter_proposicao_numero'),
     ]
 

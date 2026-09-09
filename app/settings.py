@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'integrations',
     'ingest',
     'legis',
-    'camara',
+    'camera',
     'social',
 
     # Crispy Forms

@@ -3,7 +3,7 @@ from datetime import time, timedelta
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from integrations.services.discord import DiscordService
-from integrations.services.camara_service import CamaraService
+from integrations.services.camera_service import CamaraService
 from integrations.scraper.scraper import Scraper
 
 import logging

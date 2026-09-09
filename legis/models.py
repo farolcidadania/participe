@@ -1,6 +1,6 @@
 from openai.types import eval_stored_completions_data_source_config
 from django.db import models
-from camara.models import Vereador, Comissao
+from camera.models import Vereador, Comissao
 from ingest.models import MateriaSettings
 from django.utils import timezone
 from .utils import remover_acentos

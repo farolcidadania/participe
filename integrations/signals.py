@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
-from .models import camaraToken
+from .models import CamaraToken
 
 User = get_user_model()
 
@@ -21,7 +21,7 @@ def get_system_user():
     return user
 
 
-@receiver(post_save, sender=camaraToken)
+@receiver(post_save, sender=CamaraToken)
 def log_camara_token_save(sender, instance, created, **kwargs):
     """Registra criação ou alteração de camaraToken no LogEntry."""
     system_user = get_system_user()
@@ -43,7 +43,7 @@ def log_camara_token_save(sender, instance, created, **kwargs):
     )
 
 
-@receiver(post_delete, sender=camaraToken)
+@receiver(post_delete, sender=CamaraToken)
 def log_camara_token_delete(sender, instance, **kwargs):
     """Registra remoção de camaraToken no LogEntry."""
     system_user = get_system_user()

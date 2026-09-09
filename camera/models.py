@@ -15,7 +15,7 @@ class Vereador(models.Model):
     link = models.URLField(null=True, blank=True)
     funcao = models.CharField(max_length=255, null=True, blank=True)
 
-    camara_id = models.IntegerField(null=True, blank=True)
+    camera_id = models.IntegerField(null=True, blank=True)
     
 
     partido = models.ForeignKey(Partido, on_delete=models.SET_NULL, null=True, blank=True)

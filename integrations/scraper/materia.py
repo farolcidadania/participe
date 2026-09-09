@@ -21,7 +21,7 @@ from integrations.services.discord import DiscordService
 from ingest.models import MateriaSettings, MateriaHTML
 from legis.models import Materia, Tramitacao, Autor
 from legis.utils import MAP_REGIOES, BIBLIOTECAS_ASSUNTOS, ASSUNTOS_DIRETOS, CORRECAO_ORTOGRAFICA, ASSUNTO_PARA_TEMA_GRUPO
-from camara.models import Vereador
+from camera.models import Vereador
 
 import logging
 

@@ -3,8 +3,8 @@ import json
 import logging
 from datetime import date
 
-from ..models import camaraToken
-from camara.models import Vereador, Partido
+from ..models import CamaraToken
+from camera.models import Vereador, Partido
 
 logger = logging.getLogger(__name__)
 
@@ -20,9 +20,9 @@ class CamaraService:
             'Accept': 'application/json, text/plain, */*',
             'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
         }
-        if not camaraToken.objects.filter(active=True).exists():
+        if not CamaraToken.objects.filter(active=True).exists():
             raise Exception("camaraToken não encontrado")
-        self.key = camaraToken.objects.filter(active=True).first()
+        self.key = CamaraToken.objects.filter(active=True).first()
         self.base_url = f"https://www.cmf.sc.gov.br/jsonweb/web-aplicativo.php?keysoft={self.key.token}&call="
 
     def get_vereadores(self):

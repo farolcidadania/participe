@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class camaraConfig(AppConfig):
+class cameraConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'camara'
+    name = 'camera'
     verbose_name = 'Câmara'

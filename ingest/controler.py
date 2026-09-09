@@ -1,6 +1,6 @@
 from os import link
-from integrations.services.camara_service import CamaraService
-from camara.models import Vereador, Partido
+from integrations.services.camera_service import CamaraService
+from camera.models import Vereador, Partido
 from django.utils import timezone
 from integrations.services.discord import DiscordService
 
@@ -32,7 +32,7 @@ class camaraController:
             if not partido:
                 partido = Partido.objects.create(sigla=vereador["partido"])
             
-            duplicado = Vereador.objects.filter(camara_id=camara_id).first()
+            duplicado = Vereador.objects.filter(camera_id=camara_id).first()
             if duplicado:
                 changed = False
                 if duplicado.nome != vereador["nome"]:
@@ -65,13 +65,13 @@ class camaraController:
                 funcao=vereador["funcao"],
                 imagem=vereador["imagem"],
                 link=vereador["link"],
-                camara_id=camara_id,
+                camera_id=camara_id,
                 ativo=True
             )
             created += 1
         
         # Desativa vereadores que não estão na lista atual
-        removidos = Vereador.objects.filter(ativo=True).exclude(camara_id__in=active_ids)
+        removidos = Vereador.objects.filter(ativo=True).exclude(camera_id__in=active_ids)
         for removido in removidos:
             removido.ativo = False
             removido.data_desativacao = timezone.localdate()
