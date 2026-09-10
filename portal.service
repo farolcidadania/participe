@@ -1,0 +1,12 @@
+[Unit]
+Description=uWSGI instance to serve portal
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/var/www/portal
+ExecStart=/var/www/portal/.venv/bin/uwsgi --ini /var/www/portal/portal_uwsgi.ini
+
+[Install]
+WantedBy=multi-user.target

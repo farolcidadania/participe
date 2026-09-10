@@ -1,0 +1,22 @@
+[Unit]
+Description=Portal Scraper Scheduler
+After=network.target portal.service
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/var/www/portal
+Environment="PATH=/var/www/portal/.venv/bin"
+ExecStart=/var/www/portal/.venv/bin/python manage.py run_scheduler
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+
+'''
+sudo systemctl daemon-reload
+sudo systemctl enable portal-scheduler.service
+sudo systemctl start portal-scheduler.service
+'''
